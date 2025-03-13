@@ -1,0 +1,10 @@
+[project]
+name = "learngap-api"
+version = "0.1.0"
+description = "LearnGap API"
+readme = "README.md"
+requires-python = ">=3.11.11"
+dependencies = [
+    "crewai>=0.105.0",
+    "fastapi[standard]>=0.115.11",
+]
