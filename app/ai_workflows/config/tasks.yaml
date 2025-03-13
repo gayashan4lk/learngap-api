@@ -13,4 +13,3 @@ user_data_reporter_task:
     A fully fledged report with the main topics, each with a full section of information.
     Formatted as markdown without '```'
   agent: user_data_reporter
-

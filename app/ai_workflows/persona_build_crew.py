@@ -1,20 +1,20 @@
-from crewai import LLM, Agent, Task, Crew, Process
+import os
+from crewai import Crew, Task, Agent, Process, LLM
 from crewai.project import CrewBase, agent, crew, task
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
 @CrewBase
 class PersonaBuildCrew:
-    agents_config = 'config/agents.yaml'
-    tasks_config = 'config/tasks.yaml'
+    agents_config = "config/agents.yaml"
+    tasks_config = "config/tasks.yaml"
 
     anthropic_model_haiku = LLM(
 		model=f"anthropic/{os.getenv('ANTHROPIC_MODEL_HAIKU', 'claude-3-5-haiku-latest')}", temperature=0.5)
     anthropic_model_sonnet = LLM(
 		model=f"anthropic/{os.getenv('ANTHROPIC_MODEL_SONNET', 'claude-3-7-sonnet-latest')}", temperature=0.5)
-
+    
     @agent
     def user_data_analyst(self) -> Agent:
         return Agent(
@@ -52,4 +52,3 @@ class PersonaBuildCrew:
             process=Process.sequential,
             verbose=True,
         )
-    

@@ -1,6 +1,8 @@
+import warnings
 from fastapi import APIRouter
-from app.models.userModels import UserVM
-from app.ai_workflows.persona_build_crew import PersonaBuildCrew
+from app.models.user_models import UserVM
+
+warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 router = APIRouter(
     prefix="/workflows",
@@ -14,5 +16,5 @@ async def test():
 
 @router.post("/persona")
 async def persona_builder(user_data: UserVM):
-    output = PersonaBuildCrew().crew().kickoff()
-    return output
+    # output = PersonaBuildCrew().crew().kickoff()
+    return user_data
