@@ -4,5 +4,4 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "This is the root of the LearnGapAPI"}
-
+    return {"message": "Hello CrewAI"}
