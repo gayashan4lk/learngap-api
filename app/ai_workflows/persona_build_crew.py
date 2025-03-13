@@ -1,8 +1,10 @@
 import os
 import logging
+from dotenv import load_dotenv
 from crewai import Crew, Task, Agent, Process, LLM
 from crewai.project import CrewBase, agent, crew, task
-from dotenv import load_dotenv
+from crewai_tools import SerperDevTool
+
 
 load_dotenv()
 
@@ -13,6 +15,8 @@ logging.getLogger("LiteLLM").setLevel(logging.WARNING)
 class PersonaBuildCrew:
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
+
+    search_tool = SerperDevTool()
 
     anthropic_model_haiku = LLM(
 		model=f"anthropic/{os.getenv('ANTHROPIC_MODEL_HAIKU', 'claude-3-5-haiku-latest')}", 
@@ -30,6 +34,7 @@ class PersonaBuildCrew:
         return Agent(
             config=self.agents_config['user_data_analyst'],
             verbose=True,
+            tools=[self.search_tool],
             llm=self.anthropic_model_haiku
         )
     
