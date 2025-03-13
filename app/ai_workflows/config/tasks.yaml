@@ -1,0 +1,15 @@
+user_data_analyst_task:
+  description: >
+    Conduct a thorough research about {topic}
+    Find out about their interests, hobbies, and anything else that might be relevant to their persona
+  expected_output: >
+    A list with 10 bullet points of the most relevant information about {topic}
+  agent: user_data_analyst
+
+user_data_reporter_task:
+  description: >
+    Report the user data of {topic}
+  expected_output: >
+    A fully fledged report with the main topics, each with a full section of information.
+    Formatted as markdown without '```'
+  agent: user_data_reporter
