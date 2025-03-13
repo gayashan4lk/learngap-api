@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from app.models.userModels import UserVM
 
 router = APIRouter(
     prefix="/workflows",
@@ -11,5 +12,5 @@ async def test():
     return {"message": "AI workflows are running"}
 
 @router.post("/persona")
-async def persona_builder():
-    return {"message": "Persona builder is running"}
+async def persona_builder(user_data: UserVM):
+    return user_data
