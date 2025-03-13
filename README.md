@@ -1,5 +1,16 @@
 # LearnGAP API
 
+## Run
+execute this command in the root directory after creating a vertual environment and installing dependencies.
+```bash
+uvicorn app.main:app --reload
+```
+
+if you run below command weired import errors will happen!!
+```bash
+uv run fastapi dev
+```
+[read more](https://stackoverflow.com/questions/60819376/fastapi-throws-an-error-error-loading-asgi-app-could-not-import-module-api)
 
 ## Readings
 ### Resource 01
