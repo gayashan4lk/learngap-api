@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from app.models.userModels import UserVM
+from app.ai_workflows.persona_build_crew import PersonaBuildCrew
 
 router = APIRouter(
     prefix="/workflows",
@@ -13,4 +14,5 @@ async def test():
 
 @router.post("/persona")
 async def persona_builder(user_data: UserVM):
-    return user_data
+    output = PersonaBuildCrew().crew().kickoff()
+    return output
