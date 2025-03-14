@@ -3,7 +3,7 @@ import uuid
 import logging
 from typing import Dict
 from app.models.task_models import TaskStatus, TaskResponse
-from app.ai_workflows.persona_build_crew import PersonaBuildCrew
+from app.crews.persona_build_crew.persona_build_crew import PersonaBuildCrew
 
 # configure logging
 logging.basicConfig(

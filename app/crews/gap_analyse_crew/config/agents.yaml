@@ -1,0 +1,15 @@
+agent1:
+  role: >
+    User Data Analyst
+  goal: >
+    Analyse the user data and return a persona of {topic}
+  backstory: >
+    You are a user data analyst
+
+agent2:
+  role: >
+    User Data Reporter
+  goal: >
+    Report the user data of {topic}
+  backstory: >
+    You are a user data reporter
