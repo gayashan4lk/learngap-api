@@ -35,7 +35,7 @@ class PersonaBuildCrew:
             config=self.agents_config['user_data_analyst'],
             verbose=True,
             tools=[self.search_tool],
-            llm=self.anthropic_model_haiku
+            # llm=self.anthropic_model_haiku
         )
     
     @agent
@@ -43,19 +43,21 @@ class PersonaBuildCrew:
         return Agent(
             config=self.agents_config['user_data_reporter'],
             verbose=True,
-            llm=self.anthropic_model_haiku
+            # llm=self.anthropic_model_haiku
         )
     
     @task
     def user_data_analyst_task(self) -> Task:
         return Task(
             config=self.tasks_config['user_data_analyst_task'],
+            agent=self.user_data_analyst()
         )
     
     @task
     def user_data_reporter_task(self) -> Task:
         return Task(
             config=self.tasks_config['user_data_reporter_task'],
+            agent=self.user_data_reporter(),
             output_file='app/outputs/report.md'
         )
     
