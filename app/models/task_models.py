@@ -15,3 +15,4 @@ class TaskResponse(BaseModel):
     task_id: str
     status: TaskStatus
     result: Optional[Dict[str, Any]] = None
+    error: Optional[str] = None

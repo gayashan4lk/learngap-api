@@ -40,8 +40,8 @@ class Proj():
 
 		output_agent = Agent(
 			role="Output Agent",
-			goal="Generate a detailed and structured output based on the validated skills.",
-			backstory="You are a meticulous output generator with a knack for creating clear and concise outputs.",
+			goal="Generate a structured JSON output based on the validated skills, ensuring it follows the required JSON schema exactly without markdown or formatting.",
+			backstory="You are a precise data formatter specializing in creating machine-readable JSON outputs that adhere strictly to the required schema. You never include markdown code block markers or other formatting in your JSON.",
 			verbose=True
 		)
 
@@ -70,18 +70,59 @@ class Proj():
 		)
 
 		validation_task = Task(
-			description="Cross-check the extracted skills against the original description.",
+			description="Cross-check the extracted skills against the original description. Assign confidence ratings to each skill on a scale of 1-5, with 5 being the highest confidence.",
 			expected_output="A validated, accurate, and comprehensive list of skills with confidence ratings and justification.",
 			agent=agents[3],
 			context=[analysis_task, refinement_task]
 		)
 
 		output_task = Task(
-			description="Format and present the validated list of skills.",
-			expected_output="A professional, comprehensive skills report in markdown format with clear sections, categorization, and explanations.",
+			description="""Format and present the validated list of skills in a valid JSON structure.
+IMPORTANT: Output ONLY the raw JSON directly, with NO markdown formatting, code blocks, or backticks.
+Do NOT wrap your output in ```json or ``` markers!
+
+Use exactly this JSON schema:
+{
+  "position": "[Extract the position/job title from the description]",
+  "description": "[Use the refined description]",
+  "required_skills": {
+    "technical": {
+      "[category_name]": {
+        "skills": [
+          {
+            "name": "[skill name]",
+            "confidence_rating": [1-5 rating],
+            "justification": "[brief justification for this skill]"
+          },
+          ...
+        ]
+      },
+      ...
+    },
+    "non_technical": {
+      "[category_name]": {
+        "skills": [
+          {
+            "name": "[skill name]",
+            "confidence_rating": [1-5 rating],
+            "justification": "[brief justification for this skill]"
+          },
+          ...
+        ]
+      },
+      ...
+    }
+  }
+}
+
+Group technical skills into logical categories (e.g., programming_languages, frameworks, databases, etc.) and similarly group non-technical skills into categories (e.g., communication_skills, project_management, etc.)
+
+REMEMBER: Your output must be valid JSON with no additional text or formatting. Do not include markdown syntax, backticks, or code block markers.
+""",
+			expected_output="A perfectly formatted raw JSON object (no markdown) containing the position, description, and categorized skills with confidence ratings and justifications.",
 			agent=agents[4],
 			context=[validation_task, analysis_task],
-			output_file='skills_report.md'
+			output_file='skill_analysis_result.json'
 		)
 
 		return [input_task, refinement_task, analysis_task, validation_task, output_task]

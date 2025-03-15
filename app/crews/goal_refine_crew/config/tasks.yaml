@@ -30,6 +30,7 @@ validation_task:
     Cross-check the extracted skills against the original description.
     Verify that all extracted skills are relevant to the context, nothing vital is missing,
     and no inappropriate or irrelevant skills are included. Check for industry-specific requirements.
+    Assign confidence ratings to each skill on a scale of 1-5, with 5 being the highest confidence.
   expected_output: >
     A validated, accurate, and comprehensive list of skills with confidence ratings and justification.
   agent: validation_agent
@@ -37,9 +38,47 @@ validation_task:
 output_task:
   description: >
     Format and present the validated list of skills from the previous task outputs.
-    Create a well-structured report that categorizes skills by type (technical, soft skills, etc.),
-    importance level, and includes brief explanations of why each skill is relevant.
+    IMPORTANT: Output ONLY the raw JSON directly, with NO markdown formatting, code blocks, or backticks.
+    Do NOT wrap your output in ```json or ``` markers!
+
+    Create a JSON structure following exactly this format:
+    {
+      "position": "[Extract the position/job title from the description]",
+      "description": "[Use the refined description]",
+      "required_skills": {
+        "technical": {
+          "[category_name]": {
+            "skills": [
+              {
+                "name": "[skill name]",
+                "confidence_rating": [1-5 rating],
+                "justification": "[brief justification for this skill]"
+              },
+              ...
+            ]
+          },
+          ...
+        },
+        "non_technical": {
+          "[category_name]": {
+            "skills": [
+              {
+                "name": "[skill name]",
+                "confidence_rating": [1-5 rating],
+                "justification": "[brief justification for this skill]"
+              },
+              ...
+            ]
+          },
+          ...
+        }
+      }
+    }
+    Group technical skills into logical categories (e.g., programming_languages, frameworks, databases, etc.) 
+    and similarly group non-technical skills into categories (e.g., communication_skills, project_management, etc.)
+
+    REMEMBER: Your output must be valid JSON with no additional text or formatting. The file must start with the opening curly brace and end with the closing curly brace of the JSON. Do not include any other text, markdown, or code block markers.
   expected_output: >
-    A professional, comprehensive skills report in markdown format with clear sections, categorization,
-    and explanations that would be immediately useful to someone reviewing the skill requirements.
+    A perfectly formatted raw JSON object (no markdown) containing the position, description, and categorized 
+    skills with confidence ratings and justifications.
   agent: output_agent
