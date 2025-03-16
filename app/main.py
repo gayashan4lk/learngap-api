@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers.test import router as test_router
-from app.routers.workflows import router as workflows_router
+from app.routers.persona_build_router import router as persona_build_router
 
 app = FastAPI()
 
@@ -13,9 +12,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(test_router)
-app.include_router(workflows_router)
+app.include_router(persona_build_router)
 
 @app.get("/")
 async def root():
-    return {"message": "Hello world!"}
+    return {"message": "LearnGap API is running"}
