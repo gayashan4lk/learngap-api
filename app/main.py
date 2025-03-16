@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers.test import router as test_router
-from app.routers.workflows import router as workflows_router
+from app.routers.test_router import router as test_router
+from app.routers.persona_build_router import router as workflows_router
 
 app = FastAPI()
 

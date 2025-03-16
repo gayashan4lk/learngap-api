@@ -4,8 +4,8 @@ from app.models.task_models import TaskResponse, TopicRequest
 from app.services.task_service import TaskService
 
 router = APIRouter(
-    prefix="/workflows",
-    tags=["workflows"],
+    prefix="/persona-build",
+    tags=["persona-build"],
     responses={404: {"description": "Not found"}},
 )
     
