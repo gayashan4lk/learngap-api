@@ -40,25 +40,25 @@ class PersonaBuildCrew:
 
     anthropic_model_haiku = LLM(
 		model=f"anthropic/{os.getenv('ANTHROPIC_MODEL_HAIKU', 'claude-3-5-haiku-latest')}", 
-        temperature=0.4,
+        temperature=0.2,
         max_tokens=500
     )
     anthropic_model_sonnet = LLM(
 		model=f"anthropic/{os.getenv('ANTHROPIC_MODEL_SONNET', 'claude-3-7-sonnet-latest')}", 
-        temperature=0.4,
+        temperature=0.2,
         max_tokens=500
     )
 
     openai_model = LLM(
         model=f"{os.getenv('OPENAI_MODEL_NAME', 'gpt-4o-mini')}", 
-        temperature=0.4,
+        temperature=0.2,
         max_tokens=500
     )
 
     groq_model = LLM(
         model=f"groq/{os.getenv('GROQ_MODEL_NAME', 'llama3-8b-8192')}",
         api_key=os.environ['GROQ_API_KEY'],
-        temperature=0.4,
+        temperature=0.2,
         max_tokens=500
     )
     
@@ -69,7 +69,7 @@ class PersonaBuildCrew:
             tools=[self.search_tool],
             allow_delegation=False,
             verbose=True,
-            llm=self.groq_model
+            llm=self.openai_model
         )
     
     @agent
@@ -79,7 +79,7 @@ class PersonaBuildCrew:
             tools=[self.search_tool],
             allow_delegation=False,
             verbose=True,
-            llm=self.groq_model
+            llm=self.openai_model
         )
     
     @agent
@@ -89,7 +89,7 @@ class PersonaBuildCrew:
             tools=[self.search_tool],
             allow_delegation=False,
             verbose=True,
-            llm=self.groq_model
+            llm=self.openai_model
         )
     
     @agent
@@ -99,7 +99,7 @@ class PersonaBuildCrew:
             tools=[self.search_tool],
             allow_delegation=False,
             verbose=True,
-            llm=self.groq_model
+            llm=self.openai_model
         )
     
     @agent
@@ -109,7 +109,7 @@ class PersonaBuildCrew:
             tools=[self.search_tool],
             allow_delegation=False,
             verbose=True,
-            llm=self.groq_model
+            llm=self.openai_model
         )
     
     @agent
@@ -118,7 +118,7 @@ class PersonaBuildCrew:
             config=self.agents_config['data_synthesizer'],
             allow_delegation=False,
             verbose=True,
-            llm=self.groq_model
+            llm=self.openai_model
         )
     
     @agent
@@ -127,7 +127,7 @@ class PersonaBuildCrew:
             config=self.agents_config['persona_generator'],
             allow_delegation=False,
             verbose=True,
-            llm=self.groq_model
+            llm=self.openai_model
         )
 
     @task
