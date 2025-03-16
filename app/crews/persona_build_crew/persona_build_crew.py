@@ -3,7 +3,7 @@ import logging
 from dotenv import load_dotenv
 from crewai import Crew, Task, Agent, Process, LLM
 from crewai.project import CrewBase, agent, crew, task
-from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FirecrawlCrawlWebsiteTool
+from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FirecrawlCrawlWebsiteTool, FirecrawlSearchTool
 
 
 load_dotenv()
@@ -17,12 +17,26 @@ class PersonaBuildCrew:
     tasks_config = "config/tasks.yaml"
 
     search_tool = SerperDevTool()
-    # general_web_scrape_tool = ScrapeWebsiteTool()
-    # github_scrape_tool = ScrapeWebsiteTool(website_url='https://github.com/')
-    # medium_scrape_tool = ScrapeWebsiteTool(website_url='https://medium.com/')
-    github_firecrawl_crawl_tool = FirecrawlCrawlWebsiteTool(website_url='https://github.com/')
-    linkedin_firecrawl_crawl_tool = FirecrawlCrawlWebsiteTool(website_url='https://rocketreach.co/')
-    medium_firecrawl_crawl_tool = FirecrawlCrawlWebsiteTool(website_url='https://medium.com/')
+    general_web_scrape_tool = ScrapeWebsiteTool()
+    github_scrape_tool = ScrapeWebsiteTool(website_url='https://github.com/')
+    medium_scrape_tool = ScrapeWebsiteTool(website_url='https://medium.com/')
+    # github_firecrawl_crawl_tool = FirecrawlCrawlWebsiteTool(
+    #     website_url='https://github.com/DK01git/LearnA_ws',
+    #     max_depth=2,
+    #     onlyMainContent=True
+    # )
+    # linkedin_firecrawl_crawl_tool = FirecrawlCrawlWebsiteTool(
+    #     website_url='https://rocketreach.co/diluksha-perera-email_719639221/',
+    #     max_depth=2,
+    #     onlyMainContent=True
+    # )
+    # medium_firecrawl_crawl_tool = FirecrawlCrawlWebsiteTool(
+    #     website_url='https://medium.com/@dilukshakaushal',
+    #     max_depth=2,
+    #     onlyMainContent=True
+    # )
+
+    # firecrawl_search_tool = FirecrawlSearchTool(query='what is firecrawl?')
 
     anthropic_model_haiku = LLM(
 		model=f"anthropic/{os.getenv('ANTHROPIC_MODEL_HAIKU', 'claude-3-5-haiku-latest')}", 
@@ -65,7 +79,7 @@ class PersonaBuildCrew:
     def linkedin_specialist(self) -> Agent:
         return Agent(
             config=self.agents_config['linkedin_specialist'],
-            tools=[self.search_tool, self.linkedin_firecrawl_crawl_tool],
+            tools=[self.search_tool, self.general_web_scrape_tool],
             allow_delegation=False,
             verbose=True,
             llm=self.openai_model
@@ -75,7 +89,7 @@ class PersonaBuildCrew:
     def github_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config['github_analyst'],
-            tools=[self.search_tool, self.github_firecrawl_crawl_tool],
+            tools=[self.search_tool, self.github_scrape_tool],
             allow_delegation=False,
             verbose=True,
             llm=self.openai_model
@@ -85,7 +99,7 @@ class PersonaBuildCrew:
     def content_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config['content_analyst'],
-            tools=[self.search_tool, self.medium_firecrawl_crawl_tool],
+            tools=[self.search_tool, self.medium_scrape_tool],
             allow_delegation=False,
             verbose=True,
             llm=self.openai_model
@@ -131,7 +145,7 @@ class PersonaBuildCrew:
         return Task(
             config=self.tasks_config['task_linkedin_analysis'],
             agent=self.linkedin_specialist(),
-            tools=[self.search_tool, self.linkedin_firecrawl_crawl_tool],
+            tools=[self.search_tool, self.general_web_scrape_tool],
             dependencies=[self.task_initial_data_collection()]
         )
     
@@ -140,7 +154,7 @@ class PersonaBuildCrew:
         return Task(
             config=self.tasks_config['task_github_analysis'],
             agent=self.github_analyst(),
-            tools=[self.search_tool, self.github_firecrawl_crawl_tool],
+            tools=[self.search_tool, self.github_scrape_tool],
             dependencies=[self.task_initial_data_collection()]
         )
     
@@ -149,7 +163,7 @@ class PersonaBuildCrew:
         return Task(
             config=self.tasks_config['task_medium_analysis'],
             agent=self.content_analyst(),
-            tools=[self.search_tool, self.medium_firecrawl_crawl_tool],
+            tools=[self.search_tool, self.medium_scrape_tool],
             dependencies=[self.task_initial_data_collection()]
         )
     
