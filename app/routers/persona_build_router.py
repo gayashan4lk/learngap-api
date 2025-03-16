@@ -2,6 +2,7 @@ from fastapi import APIRouter, BackgroundTasks, HTTPException
 from app.models.user_models import UserVM
 from app.models.task_models import TaskResponse, TopicRequest
 from app.services.persona_build_service import PersonaBuildService
+from app.models.user_models import UserPersonaRequest
 
 router = APIRouter(
     prefix="/persona-build",
@@ -9,9 +10,9 @@ router = APIRouter(
 )
     
 @router.post("/task", response_model=TaskResponse)
-async def create_task(request: TopicRequest, background_tasks: BackgroundTasks):
-    task_id = PersonaBuildService.create_task(request.topic)
-    background_tasks.add_task(PersonaBuildService.process_task, task_id, request.topic)
+async def create_task(request: UserPersonaRequest, background_tasks: BackgroundTasks):
+    task_id = PersonaBuildService.create_task()
+    background_tasks.add_task(PersonaBuildService.process_task, task_id, request)
     return PersonaBuildService.get_task_status(task_id)
 
 @router.get("/task/{task_id}", response_model=TaskResponse)

@@ -16,6 +16,20 @@ uv run fastapi dev
 
 [read more](https://stackoverflow.com/questions/60819376/fastapi-throws-an-error-error-loading-asgi-app-could-not-import-module-api)
 
+## Important commands
+
+### update requirements.txt file using uv
+
+```bash
+uv export --output-file requirements.txt
+```
+
+### test persona build crew
+
+```bash
+python app/crews/persona_build_crew/test.py
+```
+
 ## Readings
 
 ### Resource 01
