@@ -1,9 +1,8 @@
 import asyncio
 import uuid
 import logging
-from typing import Dict
+from typing import Dict, ClassVar
 from app.models.task_models import TaskStatus, TaskResponse
-from app.crews.persona_build_crew.persona_build_crew import PersonaBuildCrew
 
 # configure logging
 logging.basicConfig(
@@ -14,7 +13,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class TaskService:
-    _tasks: Dict[str, TaskResponse] = {}
+    _tasks: ClassVar[Dict[str, TaskResponse]] = {}
 
     @classmethod
     def create_task(cls, topic: str) -> str:
@@ -34,16 +33,28 @@ class TaskService:
     
     @classmethod
     async def process_task(cls, task_id: str, topic: str):
+        """
+        Base implementation for processing tasks.
+        Child classes should override this method with their specific implementation.
+        """
         try:
             cls._tasks[task_id].status = TaskStatus.PROCESSING
             logger.info(f"Task {task_id} status changed to PROCESSING")
-            crew = PersonaBuildCrew()
-            result = await crew.crew().kickoff_async(inputs={"topic": topic})
+            
+            # Implementation to be provided by child classes
+            await cls.run_crew(task_id, topic)
+            
             cls._tasks[task_id].status = TaskStatus.COMPLETED
-            cls._tasks[task_id].result = result
             logger.info(f"Task {task_id} completed successfully with status {cls._tasks[task_id].status}")
         except Exception as e:
             cls._tasks[task_id].status = TaskStatus.FAILED
             cls._tasks[task_id].error = str(e)
             logger.error(f"Task {task_id} failed with error: {e}")
     
+    @classmethod
+    async def run_crew(cls, task_id: str, topic: str):
+        """
+        Abstract method to be implemented by child classes.
+        This method should handle the specific task processing logic.
+        """
+        raise NotImplementedError("Child classes must implement this method")
