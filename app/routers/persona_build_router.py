@@ -6,7 +6,6 @@ from app.services.persona_build_service import PersonaBuildService
 router = APIRouter(
     prefix="/persona-build",
     tags=["persona-build"],
-    responses={404: {"description": "Not found"}},
 )
     
 @router.post("/task", response_model=TaskResponse)
