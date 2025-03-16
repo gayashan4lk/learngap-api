@@ -5,7 +5,6 @@ from crewai import Crew, Task, Agent, Process, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FirecrawlCrawlWebsiteTool, FirecrawlSearchTool
 
-
 load_dotenv()
 
 # Suppress logs from LiteLLM and httpx

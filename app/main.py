@@ -1,7 +1,12 @@
+import os
+import agentops
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers.persona_build_router import router as persona_build_router
 from app.routers.goal_refine_router import router as goal_refine_router
+
+load_dotenv()
 
 app = FastAPI()
 

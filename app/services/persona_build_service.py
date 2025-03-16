@@ -1,10 +1,14 @@
 import asyncio
+import os
 import uuid
 import logging
 from typing import Dict
 from app.models.task_models import TaskResponse, TaskStatus
 from app.crews.persona_build_crew.persona_build_crew import PersonaBuildCrew
 from app.models.user_models import UserPersonaRequest
+import agentops
+
+os
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -35,6 +39,7 @@ class PersonaBuildService():
     @classmethod
     async def process_task(cls, task_id: str, request: UserPersonaRequest):
         try:
+            agentops.init(api_key=os.getenv('AGENTOPS_API_KEY'), default_tags=['learn-gap'])
             cls._tasks[task_id].status = TaskStatus.PROCESSING
             logger.info(f"Task {task_id} status changed to PROCESSING")
             print(f"request: {request}")
@@ -46,6 +51,7 @@ class PersonaBuildService():
             cls._tasks[task_id].status = TaskStatus.COMPLETED
             cls._tasks[task_id].result = result
             logger.info(f"Task {task_id} completed successfully with status {cls._tasks[task_id].status}")
+            agentops.end_session("Succeeded")
         except Exception as e:
             cls._tasks[task_id].status = TaskStatus.FAILED
             cls._tasks[task_id].error = str(e)
