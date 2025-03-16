@@ -1,13 +1,83 @@
-task1:
+input_task:
   description: >
-    Conduct a thorough research about {topic}
-    Find out about their interests, hobbies, and anything else that might be relevant to their persona
+    Collect and process the raw textual description provided by the user: {description}
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
+    The complete raw description with any clarifications or structured formatting that might help in further analysis.
 
-task2:
+position_extraction_task:
   description: >
-    Report the user data of {topic}
+    From the provided description, extract the position or job title.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
+    The identified position or job title.
+
+refinement_task:
+  description: >
+    Clean and standardize the following input description: {description}
+  expected_output: >
+    A polished, well-structured, and refined description with clear points and organized sections.
+
+analysis_task:
+  description: >
+    Identify both technical and non-technical skills from the refined description.
+  expected_output: >
+    A detailed and categorized list of all required skills, competencies, and expertise with clear organization.
+
+validation_task:
+  description: >
+    Cross-check the extracted skills against the original description. Assign confidence ratings to each skill on a scale of 1-5, with 5 being the highest confidence.
+  expected_output: >
+    A validated, accurate, and comprehensive list of skills with confidence ratings and justification.
+
+output_task:
+  description: >
+    Format and present the validated list of skills in a valid JSON structure.
+    EXTREMELY IMPORTANT: Output ONLY the raw JSON directly, with NO additional text, NO markdown formatting, NO code blocks, and NO backticks.
+    Your entire response must be ONLY a valid JSON object.
+
+    Use exactly this JSON schema:
+    {{
+      "description": "{description}",
+      "required_skills": {{
+        "technical": {{
+          "[category_name]": {{
+            "skills": [
+              {{
+                "name": "[skill name]",
+                "confidence_rating": [1-5 rating],
+                "justification": "[brief justification for this skill]"
+              }},
+              ...
+            ]
+          }},
+          ...
+        }},
+        "non_technical": {{
+          "[category_name]": {{
+            "skills": [
+              {{
+                "name": "[skill name]",
+                "confidence_rating": [1-5 rating],
+                "justification": "[brief justification for this skill]"
+              }},
+              ...
+            ]
+          }},
+          ...
+        }}
+      }}
+    }}
+
+    Group technical skills into logical categories (e.g., programming_languages, frameworks, databases, etc.) and similarly group non-technical skills into categories (e.g., communication_skills, project_management, etc.)
+
+    YOUR ENTIRE RESPONSE MUST BE VALID JSON ONLY - DO NOT INCLUDE ANY TEXT BEFORE OR AFTER THE JSON OBJECT.
+    DO NOT USE MARKDOWN CODE BLOCKS.
+    DO NOT ADD ANY EXPLANATION OR DESCRIPTION.
+    DO NOT USE BACKTICKS AT ALL.
+    RESPOND ONLY WITH THE PURE JSON OBJECT.
+  expected_output: >
+    A perfectly formatted raw JSON object containing the description and categorized skills with confidence ratings and justifications.
+  checks:
+    - Check that the output contains ONLY a valid JSON object
+    - Verify there are no markdown code blocks or backticks in the output
+    - Confirm the output follows the specified JSON schema
+    - Ensure there is no text before or after the JSON object

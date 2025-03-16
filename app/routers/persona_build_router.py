@@ -1,6 +1,5 @@
 from fastapi import APIRouter, BackgroundTasks, HTTPException
-from app.models.user_models import UserVM
-from app.models.task_models import TaskResponse, TopicRequest
+from app.models.task_models import TaskResponse
 from app.services.persona_build_service import PersonaBuildService
 from app.models.user_models import UserPersonaRequest
 

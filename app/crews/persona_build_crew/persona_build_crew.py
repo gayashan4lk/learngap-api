@@ -16,7 +16,7 @@ class PersonaBuildCrew:
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
 
-    search_tool = SerperDevTool()
+    search_tool = SerperDevTool(n_results=5)
     # general_web_scrape_tool = ScrapeWebsiteTool()
     # github_scrape_tool = ScrapeWebsiteTool(website_url='https://github.com/')
     # medium_scrape_tool = ScrapeWebsiteTool(website_url='https://medium.com/')
