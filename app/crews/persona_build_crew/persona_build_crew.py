@@ -68,5 +68,6 @@ class PersonaBuildCrew:
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
+            name="Persona Build Crew"
         )
     
