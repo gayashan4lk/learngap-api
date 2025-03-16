@@ -72,7 +72,7 @@ class GapAnalyseCrew:
             verbose=True,
             allow_delegation=False,
             memory=True,
-            tools=[self.web_tool],
+            tools=[self.persona_json_tool, self.project_json_tool],
             llm=self.openai_model
         )
     
@@ -83,7 +83,7 @@ class GapAnalyseCrew:
             verbose=True,
             allow_delegation=False,
             memory=True,
-            tools=[self.json_tool],
+            tools=[self.project_json_tool],
             llm=self.openai_model
         )
     
