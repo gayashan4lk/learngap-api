@@ -1,6 +1,6 @@
 extract_skills_task:
   description: >
-    Read the provided user {persona} JSON file and extract all technical skills mentioned in any field. Pay special attention to:
+    Read the provided user persona JSON file and extract all technical skills mentioned in any field. Pay special attention to:
     1. Explicitly listed skills sections
     2. Project descriptions that mention technologies used
     3. Role titles that imply certain skills
@@ -10,7 +10,7 @@ extract_skills_task:
     Don't miss implicit skills (e.g., if they mention "building REST APIs" they likely know HTTP protocols). 
     Extract both the skill name and any indicators of proficiency level (e.g., "basic Python", "5 years of JavaScript experience").
 
-    The JSON file is located at: {persona}
+    persona JSON file path: {persona_file_path}
   expected_output: >
     Raw list of all technical skills mentioned in the profile with associated proficiency indicators.
 
@@ -62,7 +62,7 @@ extract_explicit_requirements_task:
     4. Identify any explicitly mentioned technical skills or expertise
     5. Document any explicitly mentioned methodologies or practices
     Focus on requirements that are directly stated in the document, not inferred ones at this stage.
-    The JSON file is located at: {project}
+    project requirements JSON file path: {project_file_path}
 
   expected_output: >
     List of all explicitly stated technical requirements with any specified versions or constraints.
@@ -76,8 +76,8 @@ infer_implicit_requirements_task:
     4. Consider infrastructure and deployment needs based on project scale and requirements
     5. Infer testing, security, or compliance requirements based on project type
     6. Document your reasoning for each inferred requirement to justify its inclusion
-
     Be thorough but avoid overspecifying - only include technologies that would reasonably be required.
+    project requirements JSON file path: {project_file_path}
   expected_output: >
     List of inferred technical requirements with justification for each.
 
@@ -95,6 +95,7 @@ normalize_requirements_task:
     4. Note any dependencies between requirements
     5. Format as a comprehensive, structured dictionary of project technical requirements
     Ensure the output is valid JSON format and properly structured for machine processing.
+    project requirements JSON file path: {project_file_path}
   expected_output: >
     Structured dictionary of normalized project requirements categorized by type and criticality.
 

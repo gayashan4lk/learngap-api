@@ -37,8 +37,9 @@ class GapAnalyseCrew:
             config=self.agents_config['user_persona_reader'],
             verbose=True,
             allow_delegation=False,
-            memory=True,
+            # memory=True,
             tools=[self.json_tool],
+            llm=self.openai_model
         )
     
     @agent
@@ -49,6 +50,7 @@ class GapAnalyseCrew:
             allow_delegation=False,
             memory=True,
             tools=[self.json_tool],
+            llm=self.openai_model
         )
     
     @agent
@@ -59,6 +61,7 @@ class GapAnalyseCrew:
             allow_delegation=False,
             memory=True,
             tools=[self.web_tool],
+            llm=self.openai_model
         )
     
     @agent
@@ -69,6 +72,7 @@ class GapAnalyseCrew:
             allow_delegation=False,
             memory=True,
             tools=[self.web_tool],
+            llm=self.openai_model
         )
     
     @agent
@@ -79,6 +83,7 @@ class GapAnalyseCrew:
             allow_delegation=False,
             memory=True,
             tools=[self.json_tool],
+            llm=self.openai_model
         )
     
     @agent
@@ -88,6 +93,7 @@ class GapAnalyseCrew:
             verbose=True,
             allow_delegation=False,
             memory=True,
+            llm=self.openai_model
         )
     
     @task
@@ -207,5 +213,5 @@ class GapAnalyseCrew:
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
-            llm_config=self.llm_config
+            # llm_config=self.llm_config
         )
