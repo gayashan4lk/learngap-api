@@ -16,6 +16,14 @@ uv run fastapi dev
 
 [read more](https://stackoverflow.com/questions/60819376/fastapi-throws-an-error-error-loading-asgi-app-could-not-import-module-api)
 
+## Important commands
+
+### update requirements.txt file using uv
+
+```bash
+uv export --output-file requirements.txt
+```
+
 ## Readings
 
 ### Resource 01
