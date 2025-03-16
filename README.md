@@ -24,6 +24,12 @@ uv run fastapi dev
 uv export --output-file requirements.txt
 ```
 
+### test persona build crew
+
+```bash
+python app/crews/persona_build_crew/test.py
+```
+
 ## Readings
 
 ### Resource 01

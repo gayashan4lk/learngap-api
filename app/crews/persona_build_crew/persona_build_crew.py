@@ -17,9 +17,9 @@ class PersonaBuildCrew:
     tasks_config = "config/tasks.yaml"
 
     search_tool = SerperDevTool()
-    general_web_scrape_tool = ScrapeWebsiteTool()
-    github_scrape_tool = ScrapeWebsiteTool(website_url='https://github.com/')
-    medium_scrape_tool = ScrapeWebsiteTool(website_url='https://medium.com/')
+    # general_web_scrape_tool = ScrapeWebsiteTool()
+    # github_scrape_tool = ScrapeWebsiteTool(website_url='https://github.com/')
+    # medium_scrape_tool = ScrapeWebsiteTool(website_url='https://medium.com/')
     # github_firecrawl_crawl_tool = FirecrawlCrawlWebsiteTool(
     #     website_url='https://github.com/DK01git/LearnA_ws',
     #     max_depth=2,
@@ -79,7 +79,7 @@ class PersonaBuildCrew:
     def linkedin_specialist(self) -> Agent:
         return Agent(
             config=self.agents_config['linkedin_specialist'],
-            tools=[self.search_tool, self.general_web_scrape_tool],
+            tools=[self.search_tool],
             allow_delegation=False,
             verbose=True,
             llm=self.openai_model
@@ -89,7 +89,7 @@ class PersonaBuildCrew:
     def github_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config['github_analyst'],
-            tools=[self.search_tool, self.github_scrape_tool],
+            tools=[self.search_tool],
             allow_delegation=False,
             verbose=True,
             llm=self.openai_model
@@ -99,7 +99,7 @@ class PersonaBuildCrew:
     def content_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config['content_analyst'],
-            tools=[self.search_tool, self.medium_scrape_tool],
+            tools=[self.search_tool],
             allow_delegation=False,
             verbose=True,
             llm=self.openai_model
@@ -145,7 +145,7 @@ class PersonaBuildCrew:
         return Task(
             config=self.tasks_config['task_linkedin_analysis'],
             agent=self.linkedin_specialist(),
-            tools=[self.search_tool, self.general_web_scrape_tool],
+            tools=[self.search_tool],
             dependencies=[self.task_initial_data_collection()]
         )
     
@@ -154,7 +154,7 @@ class PersonaBuildCrew:
         return Task(
             config=self.tasks_config['task_github_analysis'],
             agent=self.github_analyst(),
-            tools=[self.search_tool, self.github_scrape_tool],
+            tools=[self.search_tool],
             dependencies=[self.task_initial_data_collection()]
         )
     
@@ -163,7 +163,7 @@ class PersonaBuildCrew:
         return Task(
             config=self.tasks_config['task_medium_analysis'],
             agent=self.content_analyst(),
-            tools=[self.search_tool, self.medium_scrape_tool],
+            tools=[self.search_tool],
             dependencies=[self.task_initial_data_collection()]
         )
     
