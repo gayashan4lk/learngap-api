@@ -57,8 +57,7 @@ class PersonaBuildCrew:
     def user_data_reporter_task(self) -> Task:
         return Task(
             config=self.tasks_config['user_data_reporter_task'],
-            agent=self.user_data_reporter(),
-            output_file='app/outputs/report.md'
+            agent=self.user_data_reporter()
         )
     
     @crew
