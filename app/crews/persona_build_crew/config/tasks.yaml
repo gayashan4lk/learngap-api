@@ -1,11 +1,9 @@
 task_initial_data_collection:
   description: >
-    1. Present a clean, user-friendly form interface for data collection.
-    2. Collect and validate user's full name, email address, educational background.
-    3. Gather professional background summary and key skills.
-    4. Validate all input fields for proper formatting.
-    5. Explain data usage transparently to build user trust.
-    6. Format and sanitize collected data for downstream processing.
+    1. Collect and validate {user_name}'s full name, email address, educational background and professional background summary.
+    2. Validate all input fields for proper formatting.
+    3. Explain data usage transparently to build user trust.
+    4. Format and sanitize collected data for downstream processing.
   expected_output: >
     A structured dictionary containing:
     - First and last name (as separate fields)
@@ -17,7 +15,7 @@ task_initial_data_collection:
 
 task_web_search:
   description: >
-    1. Conduct comprehensive web searches about the user combining name with professional keywords.
+    1. Conduct comprehensive web searches about the {user_name} combining name with professional keywords.
     2. Discover professional profiles, academic publications, and conference appearances.
     3. Find company mentions, news articles, and other relevant information.
     4. Cross-reference findings with user-provided details for validation.
@@ -34,7 +32,7 @@ task_web_search:
 
 task_linkedin_analysis:
   description: >
-    1. Access and analyze the user's LinkedIn profile using appropriate scraping tools.
+    1. Access and analyze the {user_name}'s LinkedIn profile at {linkedin} using appropriate scraping tools.
     2. Extract complete work history with positions, companies, and durations.
     3. Collect educational credentials and certifications.
     4. Gather skills, endorsements, and recommendations.
@@ -55,7 +53,7 @@ task_linkedin_analysis:
 
 task_github_analysis:
   description: >
-    1. Access and analyze all public repositories in user's GitHub profile.
+    1. Access and analyze all public repositories in {user_name}'s GitHub profile at {github}.
     2. Extract repository metadata including stars, forks, watchers, and contributors.
     3. Identify primary programming languages and technology stacks with usage percentages.
     4. Evaluate code quality, organization, documentation, and best practices.
@@ -78,7 +76,7 @@ task_github_analysis:
 
 task_medium_analysis:
   description: >
-    1. Discover and analyze all content published by the user on Medium and other platforms.
+    1. Discover and analyze all content published by the {user_name}'s Medium profile at {medium}.
     2. Identify and catalog all articles authored by the user.
     3. Analyze topics, technical depth, and writing style of each article.
     4. Track audience engagement metrics where available.
@@ -100,25 +98,20 @@ task_medium_analysis:
     - Alignment with professional background
     - Sources and confidence scores for findings
 
-task_build_persona:
+task_synthesize_user_profile:
   description: >
-    1. Collect and organize all analyzed data into defined categories.
-    2. Structure information into Personal Information section.
-    3. Organize Educational Background details chronologically.
-    4. Format Professional Experience with company details and achievements.
-    5. Categorize and rank Skills with proficiency levels.
-    6. Document Coding Behavior patterns and preferences.
-    7. Summarize Writing Topics and expertise areas.
-    8. Convert the organized information into a structured JSON format.
+    Integrate data from multiple sources (form submissions, web search results, LinkedIn, GitHub, and Medium) to create a comprehensive and validated user profile. Resolve any contradictions between data sources, identify patterns in professional development, and generate insights about expertise and specialization areas. Include a confidence score for each data point and highlight any gaps requiring further investigation.
   expected_output: >
-    A comprehensive JSON string containing:
-    - Personal Information (name, contact, social profiles)
-    - Educational Background with timeline
-    - Professional Experience with detailed history
-    - Skills categorized by domain and proficiency
-    - Coding Behavior analysis and patterns
-    - Writing Topics and thought leadership areas
-    - All data properly formatted and nested
+    A comprehensive user profile document containing:
+    1. Validated personal and professional information with source references
+    2. Timeline of career progression and skill development
+    3. List of technical skills with proficiency levels and validation sources
+    4. Professional interests and focus areas with supporting evidence
+    5. Content creation analysis and thematic patterns
+    6. Confidence scores for all consolidated data points
+    7. Identification of any information gaps or inconsistencies
+    8. Key insights about expertise evolution and specializations
+    9. Recommendations for further data collection if needed
 
 task_persona_generation:
   description: >
