@@ -3,6 +3,7 @@ import uuid
 import logging
 from typing import Dict, ClassVar
 from app.models.task_models import TaskStatus, TaskResponse
+from abc import ABC, abstractmethod
 
 # configure logging
 logging.basicConfig(
@@ -12,7 +13,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-class TaskService:
+class TaskService(ABC):
     _tasks: ClassVar[Dict[str, TaskResponse]] = {}
 
     @classmethod
@@ -33,10 +34,6 @@ class TaskService:
     
     @classmethod
     async def process_task(cls, task_id: str, topic: str):
-        """
-        Base implementation for processing tasks.
-        Child classes should override this method with their specific implementation.
-        """
         try:
             cls._tasks[task_id].status = TaskStatus.PROCESSING
             logger.info(f"Task {task_id} status changed to PROCESSING")
@@ -52,9 +49,6 @@ class TaskService:
             logger.error(f"Task {task_id} failed with error: {e}")
     
     @classmethod
+    @abstractmethod
     async def run_crew(cls, task_id: str, topic: str):
-        """
-        Abstract method to be implemented by child classes.
-        This method should handle the specific task processing logic.
-        """
-        raise NotImplementedError("Child classes must implement this method")
+        pass
