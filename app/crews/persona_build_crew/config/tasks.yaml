@@ -1,13 +1,144 @@
-user_data_analyst_task:
+task_initial_data_collection:
   description: >
-    Conduct a thorough research about {topic}
-    Find out about their interests, hobbies, and anything else that might be relevant to their persona
+    1. Present a clean, user-friendly form interface for data collection.
+    2. Collect and validate user's full name, email address, educational background.
+    3. Gather professional background summary and key skills.
+    4. Validate all input fields for proper formatting.
+    5. Explain data usage transparently to build user trust.
+    6. Format and sanitize collected data for downstream processing.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
+    A structured dictionary containing:
+    - First and last name (as separate fields)
+    - Validated email address
+    - Educational background summary
+    - Professional background summary
+    - Self-reported skills list (array format)
+    - All fields properly sanitized and formatted
 
-user_data_reporter_task:
+task_web_search:
   description: >
-    Report the user data of {topic}
+    1. Conduct comprehensive web searches about the user combining name with professional keywords.
+    2. Discover professional profiles, academic publications, and conference appearances.
+    3. Find company mentions, news articles, and other relevant information.
+    4. Cross-reference findings with user-provided details for validation.
+    5. Document all discovered web mentions and their sources.
+    6. Evaluate confidence levels for each piece of information found.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
+    A detailed report containing:
+    - Web mentions categorized by source type (news, academic, professional)
+    - Links to relevant webpages with user mentions
+    - Summary of discovered education, professional history, and skills
+    - Confidence scores for each information piece
+    - Discrepancies between user-provided and discovered information
+    - Additional information sources for further investigation
+
+task_linkedin_analysis:
+  description: >
+    1. Access and analyze the user's LinkedIn profile using appropriate scraping tools.
+    2. Extract complete work history with positions, companies, and durations.
+    3. Collect educational credentials and certifications.
+    4. Gather skills, endorsements, and recommendations.
+    5. Extract projects, publications, patents, and professional work.
+    6. Analyze connection patterns and industry distribution.
+    7. Collect authored content including articles and posts.
+    8. Document awards, honors, and recognitions.
+  expected_output: >
+    A comprehensive LinkedIn analysis containing:
+    - Chronological work history with company details
+    - Educational credentials and certifications
+    - Skills and endorsements with metrics
+    - Projects and publications
+    - Professional recommendations
+    - Authored content analysis
+    - Network analysis and industry focus
+    - Professional achievements and awards
+
+task_github_analysis:
+  description: >
+    1. Access and analyze all public repositories in user's GitHub profile.
+    2. Extract repository metadata including stars, forks, watchers, and contributors.
+    3. Identify primary programming languages and technology stacks with usage percentages.
+    4. Evaluate code quality, organization, documentation, and best practices.
+    5. Analyze contribution patterns including frequency and time distribution.
+    6. Review collaboration patterns from issues, pull requests, and code reviews.
+    7. Categorize projects by type and domain focus.
+    8. Document notable technical achievements and innovative solutions.
+    9. Track evolution of technical skills based on repository timeline.
+  expected_output: >
+    A comprehensive GitHub analysis containing:
+    - Repository list with complete metadata
+    - Technology stack analysis with usage metrics
+    - Code quality assessment report
+    - Contribution pattern analysis
+    - Collaboration style evaluation
+    - Project categorization and domain expertise
+    - Technical achievement highlights
+    - Skill evolution timeline
+    - Example code snippets demonstrating expertise
+
+task_medium_analysis:
+  description: >
+    1. Discover and analyze all content published by the user on Medium and other platforms.
+    2. Identify and catalog all articles authored by the user.
+    3. Analyze topics, technical depth, and writing style of each article.
+    4. Track audience engagement metrics where available.
+    5. Identify recurring themes and technical focus areas.
+    6. Assess thought leadership indicators and expertise evolution.
+    7. Compare content focus with stated professional background.
+    8. Document technologies and methodologies frequently discussed.
+    9. Extract notable quotes demonstrating expertise.
+    10. Create timeline of expertise development through content.
+  expected_output: >
+    A comprehensive content analysis report containing:
+    - Complete article catalog with metadata
+    - Topic categorization and expertise domains
+    - Technical depth assessment by domain
+    - Writing style analysis and engagement metrics
+    - Evolution of expertise timeline
+    - Key technologies and frameworks coverage
+    - Notable demonstrations of thought leadership
+    - Alignment with professional background
+    - Sources and confidence scores for findings
+
+task_build_persona:
+  description: >
+    1. Collect and organize all analyzed data into defined categories.
+    2. Structure information into Personal Information section.
+    3. Organize Educational Background details chronologically.
+    4. Format Professional Experience with company details and achievements.
+    5. Categorize and rank Skills with proficiency levels.
+    6. Document Coding Behavior patterns and preferences.
+    7. Summarize Writing Topics and expertise areas.
+    8. Convert the organized information into a structured JSON format.
+  expected_output: >
+    A comprehensive JSON string containing:
+    - Personal Information (name, contact, social profiles)
+    - Educational Background with timeline
+    - Professional Experience with detailed history
+    - Skills categorized by domain and proficiency
+    - Coding Behavior analysis and patterns
+    - Writing Topics and thought leadership areas
+    - All data properly formatted and nested
+
+task_persona_generation:
+  description: >
+    1. Structure all collected and validated information into standardized JSON schema.
+    2. Format personal information including name and contact details.
+    3. Organize educational experiences chronologically.
+    4. Structure professional experiences with detailed company information.
+    5. Categorize skills inventory with proficiency levels.
+    6. Document significant projects and technologies used.
+    7. Include publications and written works.
+    8. Add professional certifications and credentials.
+    9. Structure online presence data including GitHub and Medium profiles.
+    10. Categorize expertise areas with confidence levels.
+  expected_output: >
+    A complete JSON document containing:
+    - Personal information (name, contact, profiles)
+    - Educational background with timeline
+    - Professional experience with detailed history
+    - Categorized skills with proficiency levels
+    - Projects and publications
+    - Online presence analysis
+    - Expertise areas with confidence scores
+    - Generation metadata and sources
