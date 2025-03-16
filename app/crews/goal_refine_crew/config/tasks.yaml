@@ -1,84 +1,83 @@
 input_task:
   description: >
     Collect and process the raw textual description provided by the user: {description}
-    Your job is to understand the content, whether it's a job posting, project description, 
-    or any other subject matter, and ensure it's ready for further processing.
   expected_output: >
     The complete raw description with any clarifications or structured formatting that might help in further analysis.
-  agent: input_agent
+
+position_extraction_task:
+  description: >
+    From the provided description, extract the position or job title.
+  expected_output: >
+    The identified position or job title.
 
 refinement_task:
   description: >
-    Clean and standardize the following input description from the previous agent output.
-    Remove any spelling errors, eliminate repetitive content, clarify ambiguous language,
-    and organize the content in a structured format suitable for skill extraction.
+    Clean and standardize the following input description: {description}
   expected_output: >
     A polished, well-structured, and refined description with clear points and organized sections.
-  agent: refining_agent
 
 analysis_task:
   description: >
-    Identify both technical and non-technical skills from the refined description provided by the previous agent.
-    Focus on extracting specific tools, programming languages, frameworks, methodologies, platforms,
-    soft skills, and any other competencies mentioned explicitly or implied in the content.
+    Identify both technical and non-technical skills from the refined description.
   expected_output: >
     A detailed and categorized list of all required skills, competencies, and expertise with clear organization.
-  agent: analysis_agent
 
 validation_task:
   description: >
-    Cross-check the extracted skills against the original description.
-    Verify that all extracted skills are relevant to the context, nothing vital is missing,
-    and no inappropriate or irrelevant skills are included. Check for industry-specific requirements.
-    Assign confidence ratings to each skill on a scale of 1-5, with 5 being the highest confidence.
+    Cross-check the extracted skills against the original description. Assign confidence ratings to each skill on a scale of 1-5, with 5 being the highest confidence.
   expected_output: >
     A validated, accurate, and comprehensive list of skills with confidence ratings and justification.
-  agent: validation_agent
 
 output_task:
   description: >
-    Format and present the validated list of skills from the previous task outputs.
-    IMPORTANT: Output ONLY the raw JSON directly, with NO markdown formatting, code blocks, or backticks.
-    Do NOT wrap your output in ```json or ``` markers!
+    Format and present the validated list of skills in a valid JSON structure.
+    EXTREMELY IMPORTANT: Output ONLY the raw JSON directly, with NO additional text, NO markdown formatting, NO code blocks, and NO backticks.
+    Your entire response must be ONLY a valid JSON object.
 
-    Create a JSON structure following exactly this format:
-    {
-      "position": "[Extract the position/job title from the description]",
-      "description": "[Use the refined description]",
-      "required_skills": {
-        "technical": {
-          "[category_name]": {
+    Use exactly this JSON schema:
+    {{
+      "description": "{description}",
+      "required_skills": {{
+        "technical": {{
+          "[category_name]": {{
             "skills": [
-              {
+              {{
                 "name": "[skill name]",
                 "confidence_rating": [1-5 rating],
                 "justification": "[brief justification for this skill]"
-              },
+              }},
               ...
             ]
-          },
+          }},
           ...
-        },
-        "non_technical": {
-          "[category_name]": {
+        }},
+        "non_technical": {{
+          "[category_name]": {{
             "skills": [
-              {
+              {{
                 "name": "[skill name]",
                 "confidence_rating": [1-5 rating],
                 "justification": "[brief justification for this skill]"
-              },
+              }},
               ...
             ]
-          },
+          }},
           ...
-        }
-      }
-    }
-    Group technical skills into logical categories (e.g., programming_languages, frameworks, databases, etc.) 
-    and similarly group non-technical skills into categories (e.g., communication_skills, project_management, etc.)
+        }}
+      }}
+    }}
 
-    REMEMBER: Your output must be valid JSON with no additional text or formatting. The file must start with the opening curly brace and end with the closing curly brace of the JSON. Do not include any other text, markdown, or code block markers.
+    Group technical skills into logical categories (e.g., programming_languages, frameworks, databases, etc.) and similarly group non-technical skills into categories (e.g., communication_skills, project_management, etc.)
+
+    YOUR ENTIRE RESPONSE MUST BE VALID JSON ONLY - DO NOT INCLUDE ANY TEXT BEFORE OR AFTER THE JSON OBJECT.
+    DO NOT USE MARKDOWN CODE BLOCKS.
+    DO NOT ADD ANY EXPLANATION OR DESCRIPTION.
+    DO NOT USE BACKTICKS AT ALL.
+    RESPOND ONLY WITH THE PURE JSON OBJECT.
   expected_output: >
-    A perfectly formatted raw JSON object (no markdown) containing the position, description, and categorized 
-    skills with confidence ratings and justifications.
-  agent: output_agent
+    A perfectly formatted raw JSON object containing the description and categorized skills with confidence ratings and justifications.
+  checks:
+    - Check that the output contains ONLY a valid JSON object
+    - Verify there are no markdown code blocks or backticks in the output
+    - Confirm the output follows the specified JSON schema
+    - Ensure there is no text before or after the JSON object
