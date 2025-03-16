@@ -1,13 +1,232 @@
-task1:
+extract_skills_task:
   description: >
-    Conduct a thorough research about {topic}
-    Find out about their interests, hobbies, and anything else that might be relevant to their persona
-  expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
+    Read the provided user {persona} JSON file and extract all technical skills mentioned in any field. Pay special attention to:
+    1. Explicitly listed skills sections
+    2. Project descriptions that mention technologies used
+    3. Role titles that imply certain skills
+    4. Educational background and certifications
+    5. Any other fields that might indicate technical capabilities
 
-task2:
-  description: >
-    Report the user data of {topic}
+    Don't miss implicit skills (e.g., if they mention "building REST APIs" they likely know HTTP protocols). 
+    Extract both the skill name and any indicators of proficiency level (e.g., "basic Python", "5 years of JavaScript experience").
+
+    The JSON file is located at: {persona}
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
+    Raw list of all technical skills mentioned in the profile with associated proficiency indicators.
+
+normalize_skills_task:
+  description: >
+    Take the raw list of extracted skills and normalize them to standard industry terminology:
+    1. Standardize naming conventions (e.g., "ReactJS" → "React", "MS SQL" → "SQL Server")
+    2. Resolve abbreviations to their full names when appropriate
+    3. Consolidate different versions of the same technology unless version differences are significant
+    4. Standardize proficiency level descriptions to a consistent scale:
+       - Beginner/Basic: Limited exposure or academic knowledge only
+       - Intermediate: Working knowledge, can be productive with some guidance
+       - Advanced: Deep knowledge, can work independently and solve complex problems
+       - Expert: Complete mastery, can design systems and mentor others
+
+    When normalizing, preserve any version-specific information that might be relevant.
+  expected_output: >
+    Normalized list of skills with standardized names and proficiency levels.
+
+categorize_skills_task:
+  description: >
+    Organize the normalized skills into a structured format with logical categories:
+    1. Categorize by type:
+       - Programming Languages
+       - Frameworks & Libraries
+       - Databases & Data Storage
+       - DevOps & Infrastructure
+       - Cloud Services & Platforms
+       - Tools & Software
+       - Methodologies & Practices
+       - Domain-Specific Knowledge
+    2. For each skill, include:
+       - Standardized name
+       - Normalized proficiency level
+       - Years of experience (if available)
+       - Context of use (if available)
+    3. Format the output as a structured dictionary that clearly represents the user's current technical capabilities.
+
+    Ensure the output is valid JSON format and properly structured for machine processing.
+  expected_output: >
+    Structured JSON dictionary of user skills organized by category with normalized terminology and proficiency levels.
+
+extract_explicit_requirements_task:
+  description: >
+    Analyze the provided project requirements JSON file and extract all explicitly mentioned technical requirements:
+    1. Identify all specifically named technologies, languages, frameworks, and tools
+    2. Note any version requirements or constraints mentioned
+    3. Extract environment or platform specifications
+    4. Identify any explicitly mentioned technical skills or expertise
+    5. Document any explicitly mentioned methodologies or practices
+    Focus on requirements that are directly stated in the document, not inferred ones at this stage.
+    The JSON file is located at: {project}
+
+  expected_output: >
+    List of all explicitly stated technical requirements with any specified versions or constraints.
+
+infer_implicit_requirements_task:
+  description: >
+    Based on the project description and explicit requirements, infer additional technical requirements that would be necessary:
+    1. Identify technologies that are implied by explicitly mentioned ones (e.g., React implies JavaScript)
+    2. Infer requirements based on described features or functionality
+    3. Identify standard prerequisites for the explicitly mentioned technologies
+    4. Consider infrastructure and deployment needs based on project scale and requirements
+    5. Infer testing, security, or compliance requirements based on project type
+    6. Document your reasoning for each inferred requirement to justify its inclusion
+
+    Be thorough but avoid overspecifying - only include technologies that would reasonably be required.
+  expected_output: >
+    List of inferred technical requirements with justification for each.
+
+normalize_requirements_task:
+  description: >
+    Take the combined explicit and implicit requirements and organize them:
+    1. Normalize terminology to industry standards
+    2. Categorize requirements by:
+       - Layer (Frontend, Backend, Database, DevOps, etc.)
+       - Type (Languages, Frameworks, Tools, Platforms, etc.)
+    3. Indicate which requirements are:
+       - Core/Critical: Essential to project success
+       - Important: Strongly preferred but alternatives might work
+       - Optional: Nice to have but not essential
+    4. Note any dependencies between requirements
+    5. Format as a comprehensive, structured dictionary of project technical requirements
+    Ensure the output is valid JSON format and properly structured for machine processing.
+  expected_output: >
+    Structured dictionary of normalized project requirements categorized by type and criticality.
+
+validate_requirements_task:
+  description: >
+    Review the project requirement reader's output and validate the technical requirements:
+    1. Verify that all necessary technologies for the project are included
+    2. Check for any inappropriate or unnecessary technologies
+    3. Identify any technological conflicts or incompatibilities
+    4. Ensure the technology stack is coherent and follows industry best practices
+    5. Verify that all major architectural components are covered
+    6. Check that the proposed technologies are appropriate for the project's scale and complexity
+    7. Validate that all critical security and performance needs are addressed
+    8. Add any missing technologies that would be essential for implementation
+    Provide justification for any changes or additions you make.
+  expected_output: >
+    Validated and potentially enhanced list of technical requirements with justifications for any changes.
+
+define_dependencies_task:
+  description: >
+    For each technical requirement:
+    1. Identify prerequisite skills and technological dependencies
+    2. Specify the minimum proficiency level required:
+       - Beginner: Basic understanding is sufficient
+       - Intermediate: Working knowledge required
+       - Advanced: Deep expertise needed
+    3. Create a dependency graph showing relationships between skills
+    4. Indicate which skills build upon others
+    5. Specify whether skills need to be used in combination
+    6. Define the breadth vs. depth of knowledge required
+    7. Note any specific techniques or patterns within each technology that are particularly relevant
+    Be specific about exactly what aspects of each technology are needed.
+  expected_output: >
+    Enhanced requirements list with dependency relationships and required proficiency levels for each skill.
+
+contextualize_requirements_task:
+  description: >
+    For each validated technical requirement:
+    1. Explain how it specifically applies to this project
+    2. Describe the role it plays in the overall architecture
+    3. Identify the specific features or functions it enables
+    4. Note any project-specific implementations or patterns that would be used
+    5. Explain why this particular technology is appropriate for this use case
+    6. Identify any alternatives that could potentially be substituted
+    7. Rate its criticality to project success (high/medium/low)
+    8. Estimate the relative complexity of its implementation in this context
+    Provide practical context that helps understand how each technology would be used in the project.
+    Ensure the output is valid JSON format and properly structured for machine processing.
+  expected_output: >
+    Contextualized requirements document that explains how each technology applies to the specific project with criticality ratings.
+
+compare_skills_task:
+  description: >
+    Compare the user's current skills (from User Persona Reader) against the required skills (from Software Domain Expert):
+    1. Match user skills to project requirements using normalized terminology
+    2. Account for different naming conventions or variations
+    3. Consider proficiency levels in your comparison
+    4. Note where user has skills that exceed requirements
+    5. Identify skills present in requirements but absent from user profile
+    6. Detect skills where user has some experience but not at required level
+    7. Consider related skills that might partially transfer
+    8. Create a comprehensive mapping between user skills and project requirements
+    Be thorough in your comparison and document your rationale.
+  expected_output: >
+    Detailed comparison showing how each required skill maps to the user's existing skillset.
+
+categorize_gaps_task:
+  description: >
+    For each required skill, categorize the gap and assign priority:
+
+    1. Gap Categories:
+       - "Missing": User has no experience with this technology
+       - "Needs Improvement": User has some experience but below required level
+       - "Sufficient": User meets or exceeds the required proficiency
+
+    2. For each gap, assign priority based on:
+       - Criticality to project success
+       - Difficulty to learn or improve
+       - Dependency relationships with other skills
+       - Time sensitivity within project timeline
+       
+    3. For "Needs Improvement" gaps, specify:
+       - Current estimated proficiency level
+       - Required proficiency level
+       - Specific aspects that need enhancement
+
+    Justify each categorization and priority assignment with clear reasoning.
+  expected_output: >
+    Categorized skill gaps with priorities and detailed assessment of improvement needs.
+
+structure_gap_analysis_task:
+  description: >
+    Organize the gap assessment into a structured format:
+    1. Create a JSON structure with three main sections:
+       - "missing": Skills completely absent from user profile
+       - "needs_improvement": Skills requiring enhancement
+       - "sufficient": Skills where user meets requirements
+    2. For each skill, include:
+       - Priority level (high/medium/low)
+       - Category/type of skill
+       - Dependency relationships
+       - Proficiency gap details (for "needs_improvement")
+    3. Include contextual notes about how the skill applies to the project
+    4. Ensure the structure is consistent and well-organized
+    5. Make the output programmatically parsable while remaining human-readable
+
+    Ensure the output is valid JSON format and properly structured for machine processing.
+  expected_output: >
+    Structured JSON document with comprehensive gap analysis organized by category.
+
+organize_gap_info_task:
+  description: >
+    Take the gap analysis from the Gap Analyzer and organize it into a JSON structure:
+    1. Create a hierarchical organization with main categories:
+       - Missing skills (sorted by priority)
+       - Skills needing improvement (sorted by priority)
+       - Sufficient skills (grouped by domain)
+    2. Within each category, sort skills by priority and dependency relationships"
+    3. Include detailed proficiency level comparisons and improvement suggestions
+    4. Ensure the structure is consistent and easy to navigate
+    5. Ensure all critical information is preserved and clearly presented
+  expected_output: >
+    Structured JSON document with comprehensive gap analysis organized by category.
+
+generate_report_task:
+  description: >
+    1. Take the gap analysis from the Gap Analyzer.
+    2. Organize the results into a well-structured JSON report.
+    3. Group skills by their gap category (missing, needs improvement, sufficient).
+    4. Within each category, organize by skill domain/type.
+    5. For missing and improvement skills, add brief learning recommendations.
+    6. Ensure the JSON is properly formatted and readable.
+    7. Write the final report to a JSON file at the specified output path.
+  expected_output: >
+    A well-structured JSON file containing the skill gap analysis organized by categories with learning recommendations.
