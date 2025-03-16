@@ -98,7 +98,7 @@ class GoalRefineCrew:
             config=self.tasks_config['output_task'],
             agent=self.output_agent(),
             context=[self.validation_task(), self.analysis_task(), self.refinement_task()],
-            output_file='outputs/goal_refine_result.json',
+            output_file='app/outputs/goal_refine_result.json',
             # Add a callback to sanitize and save the output as valid JSON
             async_callbacks=[self.save_output_as_json]
         )
@@ -139,7 +139,7 @@ class GoalRefineCrew:
                                 }
                             
                             # Write to the file
-                            with open('outputs/goal_refine_result.json', 'w') as f:
+                            with open('app/outputs/goal_refine_result.json', 'w') as f:
                                 json.dump(parsed, f, indent=2)
                                 logger.info(f"Successfully wrote JSON to goal_refine_result.json")
                                 return output
@@ -155,7 +155,7 @@ class GoalRefineCrew:
                     "non_technical": {}
                 }
             }
-            with open('outputs/goal_refine_result.json', 'w') as f:
+            with open('app/outputs/goal_refine_result.json', 'w') as f:
                 json.dump(fallback, f, indent=2)
                 
             return output
