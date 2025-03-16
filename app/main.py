@@ -17,3 +17,7 @@ app.include_router(persona_build_router)
 @app.get("/")
 async def root():
     return {"message": "LearnGap API is running"}
+
+@app.post("/test")
+async def test():
+    return {"message": "Test"}
