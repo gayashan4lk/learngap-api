@@ -19,6 +19,30 @@ class GoalRefineResponse(BaseModel):
     result: Optional[Dict[str, Any]] = None
     error: Optional[str] = None
     output_file: Optional[str] = None
+    
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "task_id": "123e4567-e89b-12d3-a456-426614174000",
+                "status": "completed",
+                "result": {
+                    "description": "Web Developer",
+                    "required_skills": {
+                        "technical": {},
+                        "non_technical": {}
+                    }
+                }
+            }
+        }
+    }
+    
+    def model_dump(self, **kwargs):
+        """Override model_dump to exclude error and output_file fields"""
+        exclude = kwargs.get("exclude", set())
+        exclude.add("error")
+        exclude.add("output_file")
+        kwargs["exclude"] = exclude
+        return super().model_dump(**kwargs)
 
 router = APIRouter(
     prefix="/goal_refine",
@@ -26,18 +50,18 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
     
-@router.post("/", response_model=GoalRefineResponse)
+@router.post("/")
 async def create_goal_refine_task(request: GoalRefineRequest, background_tasks: BackgroundTasks):
     try:
         task_id = GoalRefineService.create_task(request.description)
         background_tasks.add_task(GoalRefineService.process_task, task_id, request.description)
         task = GoalRefineService.get_task_status(task_id)
         
-        return GoalRefineResponse(
-            task_id=task.task_id,
-            status=task.status.value,
-            result=None,
-            error=getattr(task, 'error', None)
+        return JSONResponse(
+            content={
+                "task_id": task.task_id,
+                "status": task.status.value,
+            }
         )
     except Exception as e:
         logger.error(f"Error creating task: {str(e)}")
@@ -46,7 +70,7 @@ async def create_goal_refine_task(request: GoalRefineRequest, background_tasks: 
             content={"error": f"Failed to create task: {str(e)}"}
         )
 
-@router.get("/{task_id}", response_model=GoalRefineResponse)
+@router.get("/{task_id}")
 async def get_goal_refine_task(task_id: str):
     try:
         # Try to get the task status
@@ -58,36 +82,35 @@ async def get_goal_refine_task(task_id: str):
         except Exception as e:
             logger.error(f"Error retrieving task {task_id}: {str(e)}")
             # Return a more graceful error response
-            return GoalRefineResponse(
-                task_id=task_id,
-                status="error",
-                error=f"Error retrieving task: {str(e)}"
+            return JSONResponse(
+                content={
+                    "task_id": task_id,
+                    "status": "error",
+                }
             )
             
         # Create the initial response with basic info
-        response = GoalRefineResponse(
-            task_id=task_id,
-            status=task.status.value,
-            error=getattr(task, 'error', None)
-        )
+        response_data = {
+            "task_id": task_id,
+            "status": task.status.value,
+        }
         
         # Add result only if it exists and task is completed
         if task.status.value == "completed" and hasattr(task, 'result') and task.result:
             try:
                 # Get the output file path
                 output_file = task.result.get('output_file')
-                response.output_file = output_file
                 
                 # Get the output data
                 if 'output' in task.result:
-                    response.result = task.result['output']
+                    response_data["result"] = task.result['output']
                 
                 # Try to read from file if it exists for most up-to-date data
                 if output_file and os.path.exists(output_file):
                     try:
                         with open(output_file, 'r') as f:
                             file_data = json.load(f)
-                            response.result = file_data
+                            response_data["result"] = file_data
                     except Exception as e:
                         logger.warning(f"Could not read output file {output_file}: {str(e)}")
                         # Keep using the result from the task object
@@ -95,7 +118,7 @@ async def get_goal_refine_task(task_id: str):
                 logger.warning(f"Error reading result data: {str(file_error)}")
                 # Don't fail, just continue with what we have
         
-        return response
+        return JSONResponse(content=response_data)
     except HTTPException:
         # Pass through HTTP exceptions
         raise
@@ -103,8 +126,9 @@ async def get_goal_refine_task(task_id: str):
         # Log the error
         logger.error(f"Unexpected error handling task {task_id}: {str(e)}")
         # Return a response instead of an error
-        return GoalRefineResponse(
-            task_id=task_id,
-            status="error",
-            error=f"Error processing request: {str(e)}"
+        return JSONResponse(
+            content={
+                "task_id": task_id,
+                "status": "error",
+            }
         )
