@@ -7,4 +7,5 @@ requires-python = ">=3.11.11"
 dependencies = [
     "crewai[tools]>=0.105.0",
     "fastapi[standard]>=0.115.11",
+    "hypercorn>=0.17.3",
 ]
