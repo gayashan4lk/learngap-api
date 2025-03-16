@@ -28,7 +28,8 @@ class GapAnalyseCrew:
         max_tokens=500
     )
 
-    json_tool = JSONSearchTool()
+    persona_json_tool = JSONSearchTool(json_path="app/inputs/persona.json")
+    project_json_tool = JSONSearchTool(json_path="app/inputs/project.json")
     web_tool = WebsiteSearchTool()
     
     @agent
@@ -37,8 +38,8 @@ class GapAnalyseCrew:
             config=self.agents_config['user_persona_reader'],
             verbose=True,
             allow_delegation=False,
-            # memory=True,
-            tools=[self.json_tool],
+            memory=True,
+            tools=[self.persona_json_tool],
             llm=self.openai_model
         )
     
@@ -49,7 +50,7 @@ class GapAnalyseCrew:
             verbose=True,
             allow_delegation=False,
             memory=True,
-            tools=[self.json_tool],
+            tools=[self.project_json_tool],
             llm=self.openai_model
         )
     
