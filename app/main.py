@@ -16,6 +16,6 @@ app.add_middleware(
 app.include_router(test_router)
 app.include_router(workflows_router)
 
-@app.get("/")
+@app.get("/hello")
 async def root():
     return {"message": "Hello world!"}
