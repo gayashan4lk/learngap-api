@@ -1,12 +1,15 @@
 import os
 import logging
 from dotenv import load_dotenv
+load_dotenv()
+from langtrace_python_sdk import langtrace
+lang_api_key = os.getenv("LANGTRACE_API_KEY")
+langtrace.init(api_key = lang_api_key)
+
 from crewai import Crew, Task, Agent, Process, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FirecrawlCrawlWebsiteTool, FirecrawlSearchTool
 
-
-load_dotenv()
 
 # Suppress logs from LiteLLM and httpx
 logging.getLogger("LiteLLM").setLevel(logging.WARNING)

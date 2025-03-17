@@ -47,3 +47,14 @@ https://freedium.cfd/https://halilural5.medium.com/building-smarter-apis-a-guide
 ### Resource 03
 
 [Generated v0 ui](https://v0.dev/chat/personal-ai-tutor-app-DExqm8QELbZ?b=b_usC3PVgo619&p=0)
+
+
+### Install langtrace
+```bash
+pip install langtrace_python_sdk  
+```
+or 
+
+```bash
+uv pip install langtrace_python_sdk
+```

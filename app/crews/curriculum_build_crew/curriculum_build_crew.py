@@ -1,4 +1,10 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
+from langtrace_python_sdk import langtrace
+lang_api_key = os.getenv("LANGTRACE_API_KEY")
+langtrace.init(api_key = lang_api_key)
+
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from tools.course_tool import OnlineCourseTool
