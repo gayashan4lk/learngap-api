@@ -170,4 +170,5 @@ class GoalRefineCrew:
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
+            name="Goal Refine Crew"
         )

@@ -1,0 +1,71 @@
+input_ingestion_task:
+  description: >
+    Parse the provided JSON input and extract all necessary skill information.
+    Focus on skill names, priorities, justifications, and learning recommendations.
+    Organize the information into a structured format that can be used by the curriculum development team.
+  expected_output: >
+    A structured representation of the required skills with all relevant metadata,
+    prioritized based on importance and learning urgency. The output should clearly
+    identify the primary skill to be developed (e.g., {skill}) and its context.
+  agent: input_ingestion_agent
+
+curriculum_structuring_task:
+  description: >
+    Take the structured skill information for {skill} and develop a comprehensive
+    curriculum outline. Break down the skill into beginner, intermediate, and advanced levels.
+    For each level, identify 3-5 major tasks that build progressively on each other.
+    Further break each major task into 2-4 specific sub-tasks that represent concrete learning activities.
+  expected_output: >
+    A hierarchical curriculum outline for {skill} with clearly defined levels, major tasks, and sub-tasks.
+    Each component should have a clear learning objective and logical progression.
+  agent: curriculum_structuring_agent
+
+scheduler_duration_task:
+  description: >
+    Analyze the curriculum structure for {skill} and assign realistic time durations to each component.
+    Consider the complexity of each task, prerequisite knowledge required, and typical learning curves.
+    Provide time estimates at both the major task level and the sub-task level.
+    Ensure the overall timeline is realistic while meeting the urgent learning needs identified.
+  expected_output: >
+    The curriculum structure enhanced with time duration estimates for each component.
+    Include both total time for {skill} acquisition and breakdowns by level, major task, and sub-task.
+    Time estimates should be provided in days or hours as appropriate.
+  agent: scheduler_duration_agent
+
+resource_aggregation_task:
+  description: >
+    For each major task in the {skill} curriculum, identify and recommend high-quality learning resources.
+    Include a mix of resource types: YouTube videos, online courses, tutorials, documentation, etc.
+    Focus on resources that are current, well-reviewed, and appropriate for the specified skill level.
+    For each resource, provide title, platform/source, URL, and brief description of relevance.
+    Resources should be integrated directly with the curriculum structure, not listed separately.
+  expected_output: >
+    A curated list of learning resources for each major task in the {skill} curriculum,
+    directly integrated into the curriculum structure. Each resource should include
+    complete reference information and a brief explanation of its value.
+  agent: resource_aggregation_agent
+
+coordination_task:
+  description: >
+    Collect and integrate the outputs from all previous agents working on the {skill} curriculum.
+    Ensure consistency in formatting, terminology, and approach across all curriculum components.
+    Organize the information into a cohesive, logical structure that flows naturally from
+    beginner to advanced levels with appropriate resources and time estimates.
+    Format the output as a JSON structure with clear relationships between components.
+  expected_output: >
+    A complete draft of the {skill} curriculum with integrated structure, durations, and resources.
+    The curriculum should be formatted as a JSON object with consistent structure and ready for final quality review.
+  agent: coordination_agent
+
+quality_assurance_task:
+  description: >
+    Review the complete {skill} curriculum for gaps, inconsistencies, or areas for improvement.
+    Verify that the curriculum addresses all identified skill needs and learning objectives.
+    Check that time estimates are realistic and resource recommendations are appropriate.
+    Ensure the curriculum provides a clear, logical path from current skill level to required proficiency.
+    Confirm that the output follows the specified JSON structure and includes all required information.
+  expected_output: >
+    The final, validated {skill} curriculum in JSON format with any necessary adjustments or enhancements.
+    The JSON structure should include skills, levels, tasks, subtasks, durations, and resources organized
+    in a consistent and easily parsable format. Include a brief quality assessment as part of the JSON.
+  agent: quality_assurance_agent
