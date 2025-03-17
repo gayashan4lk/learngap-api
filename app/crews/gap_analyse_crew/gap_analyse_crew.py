@@ -215,4 +215,5 @@ class GapAnalyseCrew:
             process=Process.sequential,
             verbose=True,
             # llm_config=self.llm_config
+            name="Gap Analysis Crew"
         )
